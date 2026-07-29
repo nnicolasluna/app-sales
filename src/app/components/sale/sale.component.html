@@ -18,9 +18,12 @@
     </ng-container>
     <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef class="text-center"> Acciones </th>
-        <td mat-cell *matCellDef="let sale" class="text-center">
+        <td mat-cell *matCellDef="let sale" class="text-center space-x-2">
             <button mat-stroked-button color="primary" (click)="openDetailModal(sale)">
                 Ver Detalle
+            </button>
+            <button mat-stroked-button color="warn" (click)="deleteSale(sale)">
+                Eliminar
             </button>
         </td>
     </ng-container>
@@ -29,3 +32,32 @@
 </table>
 <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" pageSize="10" showFirstLastButtons>
 </mat-paginator>
+
+<ng-template #messageDialog let-data>
+    <h2 mat-dialog-title class="flex items-center gap-2 font-bold">
+        <mat-icon [class.text-green-600]="data.isSuccess" [class.text-red-600]="!data.isSuccess">
+            {{ data.isSuccess ? 'check_circle' : 'error' }}
+        </mat-icon>
+        {{ data.title }}
+    </h2>
+    <mat-dialog-content>
+        <p class="py-2 text-gray-700">{{ data.message }}</p>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-raised-button [color]="data.isSuccess ? 'primary' : 'warn'" mat-dialog-close>
+            Aceptar
+        </button>
+    </mat-dialog-actions>
+</ng-template>
+<ng-template #confirmDeleteDialog let-data>
+    <h2 mat-dialog-title class="flex items-center gap-2 font-bold text-red-600">
+        <mat-icon>warning</mat-icon> Confirmar eliminación
+    </h2>
+    <mat-dialog-content>
+        <p class="py-2 text-gray-700">¿Estás seguro de que deseas eliminar la venta #{{ data.id }}?</p>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button [mat-dialog-close]="false">Cancelar</button>
+        <button mat-raised-button color="warn" [mat-dialog-close]="true">Sí, eliminar</button>
+    </mat-dialog-actions>
+</ng-template>

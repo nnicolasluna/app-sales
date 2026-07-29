@@ -27,8 +27,7 @@
                 <p *ngIf="items.length === 0" class="text-gray-500 text-center py-6">
                     No has agregado productos a la venta.
                 </p>
-                <div *ngFor="let item of items.controls; let i = index" [formGroupName]="i"
-                    class="item-row">
+                <div *ngFor="let item of items.controls; let i = index" [formGroupName]="i" class="item-row">
                     <div class="flex-1 min-w-0">
                         <p class="font-semibold text-gray-800">{{ item.get('name')?.value }}</p>
                         <p class="text-xs text-gray-500">
@@ -50,8 +49,7 @@
                 </div>
             </div>
         </form>
-        <div *ngIf="items.length > 0"
-            class="item-total">
+        <div *ngIf="items.length > 0" class="item-total">
             <span class="text-lg font-bold text-gray-700">TOTAL:</span>
             <span class="text-2xl font-black text-blue-700">
                 {{ getTotal()}}
@@ -63,5 +61,6 @@
 
 <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cancelar</button>
-    <button mat-raised-button color="primary" (click)="onSubmit()">Guardar</button>
+    <button mat-raised-button color="primary" (click)="onSubmit()"
+        [disabled]="saleForm.invalid || items.length === 0">Guardar</button>
 </mat-dialog-actions>

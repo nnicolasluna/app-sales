@@ -8,12 +8,12 @@ import { environment } from 'src/environments/environment';
 })
 export abstract class ApiService<T> {
   protected http = inject(HttpClient);
-
   private readonly url: string;
 
   constructor(resource: string) {
     this.url = `${environment.apiUrl}/${resource}`;
   }
+
   getAll(): Observable<T[]> {
     return this.http.get<T[]>(this.url);
   }
@@ -22,5 +22,8 @@ export abstract class ApiService<T> {
   }
   create(data: T): Observable<T> {
     return this.http.post<T>(this.url, data);
+  }
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.url}/${id}`);
   }
 }
