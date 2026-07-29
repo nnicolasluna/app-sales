@@ -8,10 +8,16 @@
     <div class="collapse navbar-collapse" id="navbarToggler">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item me-lg-2">
-          <a class="nav-link" routerLinkActive="active" routerLink="/inicio">Inicio</a>
+          <a class="nav-link" routerLinkActive="active" routerLink="/home">Inicio</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active" routerLink="/posts">Posts</a>
+          <a class="nav-link" routerLinkActive="active" routerLink="/products">Productos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" routerLink="/sales">Ventas</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" (click)="logout()">Logout</a>
         </li>
       </ul>
     </div>

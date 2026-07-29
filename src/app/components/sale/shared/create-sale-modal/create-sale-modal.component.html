@@ -1,0 +1,67 @@
+<h2 mat-dialog-title class="text-xl font-bold">Registrar Nueva Venta</h2>
+
+<mat-dialog-content class="mat-typography">
+    <div class="flex flex-col gap-4 py-3 ">
+
+        <div class="item-search">
+            <mat-form-field appearance="outline" class="flex-1 min-w-0" subscriptSizing="dynamic">
+                <mat-label>Buscar / Seleccionar Producto</mat-label>
+                <mat-select [(value)]="selectedProductId">
+                    <mat-option *ngFor="let product of availableProducts; trackBy: trackByProductId"
+                        [value]="product.id" [disabled]="isProductSelected(product.id) || product.stock === 0">
+                        {{ product.name }}(Stock: {{ product.stock }})
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button mat-flat-button color="primary" type="button" (click)="addProduct()"
+                [disabled]="!selectedProductId">
+                <mat-icon>add</mat-icon> Agregar
+            </button>
+        </div>
+
+        <div *ngIf="errorMessage" class="text-red-600 text-sm font-medium bg-red-50 p-2 rounded">
+            {{ errorMessage }}
+        </div>
+        <form [formGroup]="saleForm">
+            <div formArrayName="items">
+                <p *ngIf="items.length === 0" class="text-gray-500 text-center py-6">
+                    No has agregado productos a la venta.
+                </p>
+                <div *ngFor="let item of items.controls; let i = index" [formGroupName]="i"
+                    class="item-row">
+                    <div class="flex-1 min-w-0">
+                        <p class="font-semibold text-gray-800">{{ item.get('name')?.value }}</p>
+                        <p class="text-xs text-gray-500">
+                            Precio: {{ item.get('price')?.value}} | Stock disp: {{
+                            item.get('stock')?.value }}
+                        </p>
+                    </div>
+                    <mat-form-field appearance="outline" class="w-28 text-center" subscriptSizing="dynamic">
+                        <mat-label>Cant.</mat-label>
+                        <input matInput type="number" formControlName="quantity" min="1"
+                            [max]="item.get('stock')?.value" />
+                    </mat-form-field>
+                    <div class="w-28 text-right font-medium text-gray-700">
+                        {{ item.get('subtotal')?.value}}
+                    </div>
+                    <button mat-icon-button color="warn" type="button" (click)="removeItem(i)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </form>
+        <div *ngIf="items.length > 0"
+            class="item-total">
+            <span class="text-lg font-bold text-gray-700">TOTAL:</span>
+            <span class="text-2xl font-black text-blue-700">
+                {{ getTotal()}}
+            </span>
+        </div>
+
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancelar</button>
+    <button mat-raised-button color="primary" (click)="onSubmit()">Guardar</button>
+</mat-dialog-actions>
